@@ -27,6 +27,10 @@
 
 ;;; Code:
 
+(require 'dired)
+(require 'dired-aux)
+
+
 (defgroup dired-atool nil
   "Atool utilities for dired."
   :group 'dired
@@ -38,6 +42,24 @@
   :group 'dired-atool
   :package-version '(dired-atool . "0.1.0"))
 
+
+;;;###autoload
+(defun dired-atool-do-unpack (&optional arg)
+  "Unpack file(s) with atool.
+ARG is used for `dired-get-marked-files'."
+  (interactive "P")
+  (let* ((files (dired-get-marked-files nil arg))
+         (dir (read-directory-name
+               (format "Unpack %s to: "
+                       (mapconcat #'file-name-nondirectory files ", "))
+               (dired-dwim-target-directory)))
+         (command (mapconcat #'shell-quote-argument
+                             `(,dired-atool-atool
+                               ,(concat "--extract-to=" dir)
+                               "--each"
+                               ,@files)
+                             " ")))
+    (async-shell-command command "*dired-atool*")))
 
 (provide 'dired-atool)
 ;;; dired-atool.el ends here
