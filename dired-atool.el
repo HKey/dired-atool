@@ -61,5 +61,23 @@ ARG is used for `dired-get-marked-files'."
                              " ")))
     (async-shell-command command "*dired-atool*")))
 
+;;;###autoload
+(defun dired-atool-do-pack (&optional arg)
+  "Pack file(s) with atool.
+ARG is used for `dired-get-marked-files'."
+  (interactive "P")
+  (let* ((files (dired-get-marked-files t arg))
+         (archive (read-file-name
+                   (format "Pack %s to: "
+                           (mapconcat #'identity files ", "))
+                   (dired-dwim-target-directory)))
+         (command (mapconcat #'shell-quote-argument
+                             `(,dired-atool-atool
+                               "--add"
+                               ,archive
+                               ,@files)
+                             " ")))
+    (async-shell-command command "*dired-atool*")))
+
 (provide 'dired-atool)
 ;;; dired-atool.el ends here
