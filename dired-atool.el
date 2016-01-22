@@ -51,7 +51,7 @@ ARG is used for `dired-get-marked-files'."
   (let* ((files (dired-get-marked-files t arg))
          (dir (read-directory-name
                (format "Unpack %s to: "
-                       (mapconcat #'file-name-nondirectory files ", "))
+                       (mapconcat #'identity files ", "))
                (dired-dwim-target-directory)))
          (command (mapconcat #'shell-quote-argument
                              `(,dired-atool-atool
