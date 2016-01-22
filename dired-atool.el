@@ -48,7 +48,7 @@
   "Unpack file(s) with atool.
 ARG is used for `dired-get-marked-files'."
   (interactive "P")
-  (let* ((files (dired-get-marked-files nil arg))
+  (let* ((files (dired-get-marked-files t arg))
          (dir (read-directory-name
                (format "Unpack %s to: "
                        (mapconcat #'file-name-nondirectory files ", "))
