@@ -43,6 +43,10 @@
   :package-version '(dired-atool . "0.1.0"))
 
 
+(defun dired-atool--buffer-name (message)
+  "Make a buffer name using MESSAGE."
+  (format "*dired-atool: %s*" message))
+
 ;;;###autoload
 (defun dired-atool-do-unpack (&optional arg)
   "Unpack file(s) with atool.
@@ -58,8 +62,9 @@ ARG is used for `dired-get-marked-files'."
                                ,(concat "--extract-to=" dir)
                                "--each"
                                ,@files)
-                             " ")))
-    (async-shell-command command "*dired-atool*")))
+                             " "))
+         (buffer-name (dired-atool--buffer-name command)))
+    (async-shell-command command buffer-name buffer-name)))
 
 ;;;###autoload
 (defun dired-atool-do-pack (&optional arg)
@@ -76,8 +81,9 @@ ARG is used for `dired-get-marked-files'."
                                "--add"
                                ,archive
                                ,@files)
-                             " ")))
-    (async-shell-command command "*dired-atool*")))
+                             " "))
+         (buffer-name (dired-atool--buffer-name command)))
+    (async-shell-command command buffer-name buffer-name)))
 
 (provide 'dired-atool)
 ;;; dired-atool.el ends here
