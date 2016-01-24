@@ -60,10 +60,11 @@ COMMAND-LIST is a list of a command separated by spaces."
 ARG is used for `dired-get-marked-files'."
   (interactive "P")
   (let* ((files (dired-get-marked-files t arg))
-         (dir (read-directory-name
-               (format "Unpack %s to: "
-                       (mapconcat #'identity files ", "))
-               (dired-dwim-target-directory)))
+         (dir (expand-file-name    ; to expand "~" to a real path name
+               (read-directory-name
+                (format "Unpack %s to: "
+                        (mapconcat #'identity files ", "))
+                (dired-dwim-target-directory))))
          (command-list `(,dired-atool-atool
                          ,(concat "--extract-to=" dir)
                          "--each"
@@ -76,10 +77,11 @@ ARG is used for `dired-get-marked-files'."
 ARG is used for `dired-get-marked-files'."
   (interactive "P")
   (let* ((files (dired-get-marked-files t arg))
-         (archive (read-file-name
-                   (format "Pack %s to: "
-                           (mapconcat #'identity files ", "))
-                   (dired-dwim-target-directory)))
+         (archive (expand-file-name ; to expand "~" to a real path name
+                   (read-file-name
+                    (format "Pack %s to: "
+                            (mapconcat #'identity files ", "))
+                    (dired-dwim-target-directory))))
          (command-list `(,dired-atool-atool
                          "--add"
                          ,archive
