@@ -47,6 +47,13 @@
   "Make a buffer name using MESSAGE."
   (format "*dired-atool: %s*" message))
 
+(defun dired-atool--async-shell-command (command-list)
+  "A wrapper function to call `async-shell-command'.
+COMMAND-LIST is a list of a command separated by spaces."
+  (let* ((command (mapconcat #'shell-quote-argument command-list " "))
+         (buffer-name (dired-atool--buffer-name command)))
+    (async-shell-command command buffer-name buffer-name)))
+
 ;;;###autoload
 (defun dired-atool-do-unpack (&optional arg)
   "Unpack file(s) with atool.
@@ -57,14 +64,11 @@ ARG is used for `dired-get-marked-files'."
                (format "Unpack %s to: "
                        (mapconcat #'identity files ", "))
                (dired-dwim-target-directory)))
-         (command (mapconcat #'shell-quote-argument
-                             `(,dired-atool-atool
-                               ,(concat "--extract-to=" dir)
-                               "--each"
-                               ,@files)
-                             " "))
-         (buffer-name (dired-atool--buffer-name command)))
-    (async-shell-command command buffer-name buffer-name)))
+         (command-list `(,dired-atool-atool
+                         ,(concat "--extract-to=" dir)
+                         "--each"
+                         ,@files)))
+    (dired-atool--async-shell-command command-list)))
 
 ;;;###autoload
 (defun dired-atool-do-pack (&optional arg)
@@ -76,14 +80,11 @@ ARG is used for `dired-get-marked-files'."
                    (format "Pack %s to: "
                            (mapconcat #'identity files ", "))
                    (dired-dwim-target-directory)))
-         (command (mapconcat #'shell-quote-argument
-                             `(,dired-atool-atool
-                               "--add"
-                               ,archive
-                               ,@files)
-                             " "))
-         (buffer-name (dired-atool--buffer-name command)))
-    (async-shell-command command buffer-name buffer-name)))
+         (command-list `(,dired-atool-atool
+                         "--add"
+                         ,archive
+                         ,@files)))
+    (dired-atool--async-shell-command command-list)))
 
 (provide 'dired-atool)
 ;;; dired-atool.el ends here
