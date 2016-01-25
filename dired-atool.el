@@ -88,5 +88,12 @@ ARG is used for `dired-get-marked-files'."
                          ,@files)))
     (dired-atool--async-shell-command command-list)))
 
+;;;###autoload
+(defun dired-atool-setup ()
+  "Setup key bindings of dired-atool commands."
+  (interactive)
+  (define-key dired-mode-map (kbd "z") #'dired-atool-do-unpack)
+  (define-key dired-mode-map (kbd "Z") #'dired-atool-do-pack))
+
 (provide 'dired-atool)
 ;;; dired-atool.el ends here
