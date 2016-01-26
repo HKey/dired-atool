@@ -54,6 +54,12 @@ COMMAND-LIST is a list of a command separated by spaces."
          (buffer-name (dired-atool--buffer-name command)))
     (async-shell-command command buffer-name buffer-name)))
 
+(defun dired-atool--make-directory (dir prompt)
+  "Make DIR directory if the answer of PROMPT is yes."
+  (when (yes-or-no-p prompt)
+    (make-directory dir t)
+    t))
+
 ;;;###autoload
 (defun dired-atool-do-unpack (&optional arg)
   "Unpack file(s) with atool.
@@ -69,7 +75,14 @@ ARG is used for `dired-get-marked-files'."
                          ,(concat "--extract-to=" dir)
                          "--each"
                          ,@files)))
-    (dired-atool--async-shell-command command-list)))
+    (if (or (file-exists-p dir)
+            (dired-atool--make-directory
+             dir
+             (format
+              "Directory %s does not exist. Make it before unpacking?"
+              dir)))
+        (dired-atool--async-shell-command command-list)
+      (message "Unpacking canceled."))))
 
 ;;;###autoload
 (defun dired-atool-do-pack (&optional arg)
@@ -82,11 +95,19 @@ ARG is used for `dired-get-marked-files'."
                     (format "Pack %s to: "
                             (mapconcat #'identity files ", "))
                     (dired-dwim-target-directory))))
+         (dir (directory-file-name (file-name-directory archive)))
          (command-list `(,dired-atool-atool
                          "--add"
                          ,archive
                          ,@files)))
-    (dired-atool--async-shell-command command-list)))
+    (if (or (file-exists-p dir)
+            (dired-atool--make-directory
+             dir
+             (format
+              "Directory %s does not exist. Make it before packing?"
+              dir)))
+        (dired-atool--async-shell-command command-list)
+      (message "Packing canceled."))))
 
 ;;;###autoload
 (defun dired-atool-setup ()
