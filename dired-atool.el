@@ -85,6 +85,23 @@ ARG is used for `dired-get-marked-files'."
       (message "Unpacking canceled."))))
 
 ;;;###autoload
+(defun dired-atool-do-unpack-with-subdirectory ()
+  "Unpack file(s) with atool.
+This command makes subdirectories in the current directory and unpacks
+files into them."
+  (interactive)
+  (let* ((files (dired-get-marked-files t))
+         (command-list `(,dired-atool-atool
+                         "--extract"
+                         "--subdir"
+                         "--each"
+                         ,@files)))
+    (if (yes-or-no-p
+         (format "Unpack %s?" (mapconcat #'identity files ", ")))
+        (dired-atool--async-shell-command command-list)
+      (message "Unpacking canceled."))))
+
+;;;###autoload
 (defun dired-atool-do-pack (&optional arg)
   "Pack file(s) with atool.
 ARG is used for `dired-get-marked-files'."
