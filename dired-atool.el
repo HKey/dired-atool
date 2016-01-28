@@ -92,7 +92,7 @@ ARG is used for `dired-get-marked-files'."
             (dired-atool--make-directory
              dir
              (format
-              "Directory %s does not exist. Make it before unpacking?"
+              "Directory %s does not exist.  Make it before unpacking?"
               dir)))
         (dired-atool--async-shell-command command-list)
       (message "Unpacking canceled."))))
@@ -136,7 +136,7 @@ ARG is used for `dired-get-marked-files'."
             (dired-atool--make-directory
              dir
              (format
-              "Directory %s does not exist. Make it before packing?"
+              "Directory %s does not exist.  Make it before packing?"
               dir)))
         (dired-atool--async-shell-command command-list)
       (message "Packing canceled."))))
