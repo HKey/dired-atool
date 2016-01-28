@@ -42,6 +42,18 @@
   :group 'dired-atool
   :package-version '(dired-atool . "0.1.0"))
 
+(defcustom dired-atool-unpacking-options '("--explain")
+  "Additional options for unpacking with atool."
+  :type '(repeat string)
+  :group 'dired-atool
+  :package-version '(dired-atool . "0.1.0"))
+
+(defcustom dired-atool-packing-options '("--explain")
+  "Additional options for packing with atool."
+  :type '(repeat string)
+  :group 'dired-atool
+  :package-version '(dired-atool . "0.1.0"))
+
 
 (defun dired-atool--buffer-name (message)
   "Make a buffer name using MESSAGE."
@@ -74,6 +86,7 @@ ARG is used for `dired-get-marked-files'."
          (command-list `(,dired-atool-atool
                          ,(concat "--extract-to=" dir)
                          "--each"
+                         ,@dired-atool-unpacking-options
                          ,@files)))
     (if (or (file-exists-p dir)
             (dired-atool--make-directory
@@ -95,6 +108,7 @@ files into them."
                          "--extract"
                          "--subdir"
                          "--each"
+                         ,@dired-atool-unpacking-options
                          ,@files)))
     (if (yes-or-no-p
          (format "Unpack %s?" (mapconcat #'identity files ", ")))
@@ -116,6 +130,7 @@ ARG is used for `dired-get-marked-files'."
          (command-list `(,dired-atool-atool
                          "--add"
                          ,archive
+                         ,@dired-atool-packing-options
                          ,@files)))
     (if (or (file-exists-p dir)
             (dired-atool--make-directory
