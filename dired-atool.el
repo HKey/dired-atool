@@ -1,4 +1,4 @@
-;;; dired-atool.el --- Atool utilities for dired.    -*- lexical-binding: t; -*-
+;;; dired-atool.el --- Pack/unpack files with atool on dired. -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2016  Hiroki YAMAKAWA
 
