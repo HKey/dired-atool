@@ -131,13 +131,23 @@ ARG is used for `dired-get-marked-files'."
                          "--add"
                          ,archive
                          ,@dired-atool-packing-options
-                         ,@files)))
-    (if (or (file-exists-p dir)
-            (dired-atool--make-directory
-             dir
-             (format
-              "Directory %s does not exist.  Make it before packing?"
-              dir)))
+                         ,@files))
+         (ok? nil))
+    (catch 'cancel
+      (when (file-exists-p archive)
+        (if (yes-or-no-p
+             (format "%s already exists.  Remove it before packing?" archive))
+            (delete-file archive)
+          (throw 'cancel nil)))
+      (unless (or (file-exists-p dir)
+                  (dired-atool--make-directory
+                   dir
+                   (format
+                    "Directory %s does not exist.  Make it before packing?"
+                    dir)))
+        (throw 'cancel nil))
+      (setq ok? t))
+    (if ok?
         (dired-atool--async-shell-command command-list)
       (message "Packing canceled."))))
 
