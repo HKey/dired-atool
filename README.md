@@ -1,5 +1,7 @@
 # dired-atool
 
+[![Build Status](https://travis-ci.org/HKey/dired-atool.svg?branch=master)](https://travis-ci.org/HKey/dired-atool)
+
 Dired-atool is an utility to pack/unpack files with [atool](http://www.nongnu.org/atool/) on dired.
 
 ## Installation
