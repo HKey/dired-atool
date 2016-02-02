@@ -75,6 +75,13 @@ COMMAND-LIST is a list of a command separated by spaces."
     (make-directory dir t)
     t))
 
+(defun dired-atool--file-names-for-prompt (files)
+  "Return a string to show in a prompt message about FILES."
+  (if (= (length files) 1)
+      (car files)
+    (format "* [%d files]" (length files))))
+
+
 ;;;###autoload
 (defun dired-atool-do-unpack (&optional arg)
   "Unpack file(s) with atool.
@@ -82,9 +89,11 @@ ARG is used for `dired-get-marked-files'."
   (interactive "P")
   (let* ((files (dired-get-marked-files t arg))
          (dir (expand-file-name    ; to expand "~" to a real path name
-               (read-directory-name
+               (dired-mark-pop-up
+                nil nil files
+                #'read-directory-name
                 (format "Unpack %s to: "
-                        (mapconcat #'identity files ", "))
+                        (dired-atool--file-names-for-prompt files))
                 (dired-dwim-target-directory))))
          (command-list `(,dired-atool-atool
                          ,(concat "--extract-to=" dir)
@@ -113,8 +122,10 @@ files into them."
                          "--each"
                          ,@dired-atool-unpacking-options
                          ,@files)))
-    (if (yes-or-no-p
-         (format "Unpack %s?" (mapconcat #'identity files ", ")))
+    (if (dired-mark-pop-up nil nil files
+                           #'yes-or-no-p
+                           (format "Unpack %s?"
+                                   (dired-atool--file-names-for-prompt files)))
         (dired-atool--async-shell-command command-list)
       (message "Unpacking canceled."))))
 
@@ -125,9 +136,11 @@ ARG is used for `dired-get-marked-files'."
   (interactive "P")
   (let* ((files (dired-get-marked-files t arg))
          (archive (expand-file-name ; to expand "~" to a real path name
-                   (read-file-name
+                   (dired-mark-pop-up
+                    nil nil files
+                    #'read-directory-name
                     (format "Pack %s to: "
-                            (mapconcat #'identity files ", "))
+                            (dired-atool--file-names-for-prompt files))
                     (dired-dwim-target-directory))))
          (dir (directory-file-name (file-name-directory archive)))
          (command-list `(,dired-atool-atool
