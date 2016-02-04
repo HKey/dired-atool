@@ -1,6 +1,8 @@
 # dired-atool
 
 [![Build Status](https://travis-ci.org/HKey/dired-atool.svg?branch=master)](https://travis-ci.org/HKey/dired-atool)
+[![MELPA](https://melpa.org/packages/dired-atool-badge.svg)](https://melpa.org/#/dired-atool)
+[![MELPA Stable](https://stable.melpa.org/packages/dired-atool-badge.svg)](https://stable.melpa.org/#/dired-atool)
 
 Dired-atool is an utility to pack/unpack files with [atool](http://www.nongnu.org/atool/) on dired.
 
