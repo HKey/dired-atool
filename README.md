@@ -8,7 +8,14 @@ Dired-atool is an utility to pack/unpack files with [atool](http://www.nongnu.or
 
 ## Installation
 
-TODO
+You can install dired-atool from [MELPA](https://melpa.org/#/) or
+[MELPA Stable](https://stable.melpa.org/#/) by following steps:
+
+1. Setup the Emacs built-in package manager to use MELPA or MELPA Stable.  
+   MELPA's documentation is [here](https://github.com/milkypostman/melpa#usage).
+
+2. Install dired-atool.  
+   `M-x package-install dired-atool`
 
 ## Setup key bindings
 
