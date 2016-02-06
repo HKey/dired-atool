@@ -45,6 +45,9 @@ You can also set key bindings manually like below:
 (define-key dired-mode-map "z" #'dired-atool-do-unpack)
 (define-key dired-mode-map "Z" #'dired-atool-do-pack)
 ```
+## Versioning
+
+The versioning of dired-atool follows [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html).
 
 ## Commands
 
