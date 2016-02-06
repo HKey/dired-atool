@@ -57,17 +57,45 @@
   :group 'dired-atool
   :package-version '(dired-atool . "0.1.0"))
 
+(defcustom dired-atool-insert-exit-message t
+  "Non-nil means that dired-atool inserts an exit message to a process buffer."
+  :type 'boolean
+  :group 'dired-atool)
+
 
 (defun dired-atool--buffer-name (message)
   "Make a buffer name using MESSAGE."
   (format "*dired-atool: %s*" message))
+
+(defun dired-atool--exit-message (process)
+  "Make a message string about exit of PROCESS."
+  (format "%s exited with code %d at %s"
+          (mapconcat #'identity (process-command process) " ")
+          (process-exit-status process)
+          (current-time-string)))
+
+(defun dired-atool--insert-exit-message (process)
+  "Insert an exit message in a buffer of PROCESS."
+  (with-current-buffer (process-buffer process)
+    (insert "\n" (dired-atool--exit-message process))))
 
 (defun dired-atool--async-shell-command (command-list)
   "A wrapper function to call `async-shell-command'.
 COMMAND-LIST is a list of a command separated by spaces."
   (let* ((command (mapconcat #'shell-quote-argument command-list " "))
          (buffer-name (dired-atool--buffer-name command)))
-    (async-shell-command command buffer-name buffer-name)))
+    (async-shell-command command buffer-name buffer-name)
+    ;; Add an exit message to the process buffer
+    (when dired-atool-insert-exit-message
+      (let* ((process (get-buffer-process buffer-name))
+             (sentinel (process-sentinel process)))
+        (set-process-sentinel
+         process
+         (lambda (process status)
+           (when (functionp sentinel)
+             (funcall sentinel process status))
+           (when (memq (process-status process) '(exit signal))
+             (dired-atool--insert-exit-message process))))))))
 
 (defun dired-atool--make-directory (dir prompt)
   "Make DIR directory if the answer of PROMPT is yes."
