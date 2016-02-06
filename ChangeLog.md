@@ -1,5 +1,9 @@
 # dired-atool ChangeLog
 
+## development
+
+[Commits](https://github.com/HKey/dired-atool/compare/1.0.0...master)
+
 ## 1.0.0 (2016/02/05)
 
 [Commits](https://github.com/HKey/dired-atool/compare/0.1.0...1.0.0)
