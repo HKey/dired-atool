@@ -6,6 +6,10 @@
 
 Dired-atool is an utility to pack/unpack files with [atool](http://www.nongnu.org/atool/) on dired.
 
+## Requirements
+
+- Emacs 24 or later
+
 ## Installation
 
 You can install dired-atool from [MELPA](https://melpa.org/#/) or
