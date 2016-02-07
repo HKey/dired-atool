@@ -4,7 +4,7 @@
 
 ;; Author: Hiroki YAMAKAWA <s06139@gmail.com>
 ;; URL: https://github.com/HKey/dired-atool
-;; Version: 1.0.0
+;; Version: 1.1.0
 ;; Package-Requires: ((emacs "24"))
 ;; Keywords: files
 
@@ -60,7 +60,8 @@
 (defcustom dired-atool-insert-exit-message t
   "Non-nil means that dired-atool inserts an exit message to a process buffer."
   :type 'boolean
-  :group 'dired-atool)
+  :group 'dired-atool
+  :package-version '(dired-atool . "1.1.0"))
 
 
 (defun dired-atool--buffer-name (message)
