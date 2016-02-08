@@ -206,3 +206,8 @@ ARG is used for `dired-get-marked-files'."
 
 (provide 'dired-atool)
 ;;; dired-atool.el ends here
+
+;; Local Variables:
+;; eval: (when (fboundp (quote flycheck-mode)) (flycheck-mode 1))
+;; eval: (when (fboundp (quote flycheck-package-setup)) (flycheck-package-setup))
+;; End:
