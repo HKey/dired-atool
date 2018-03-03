@@ -4,6 +4,8 @@
 
 [Commits](https://github.com/HKey/dired-atool/compare/1.1.0...master)
 
+- Fix file name completion of `dired-atool-do-pack`. ([#3](https://github.com/HKey/dired-atool/pull/3))
+
 ## 1.1.0 (2016/02/07)
 
 [Commits](https://github.com/HKey/dired-atool/compare/1.0.0...1.1.0)
