@@ -110,6 +110,10 @@ COMMAND-LIST is a list of a command separated by spaces."
       (car files)
     (format "* [%d files]" (length files))))
 
+(defun dired-atool--local-file-name (file)
+  "Return local file name if file is on a remote system. Return FILE for local files."
+  (let ((local-file (file-remote-p file 'localname)))
+    (or local-file file)))
 
 ;;;###autoload
 (defun dired-atool-do-unpack (&optional arg)
@@ -124,8 +128,9 @@ ARG is used for `dired-get-marked-files'."
                 (format "Unpack %s to: "
                         (dired-atool--file-names-for-prompt files))
                 (dired-dwim-target-directory))))
+         (dir-local-name (dired-atool--local-file-name dir))
          (command-list `(,dired-atool-atool
-                         ,(concat "--extract-to=" dir)
+                         ,(concat "--extract-to=" dir-local-name)
                          "--each"
                          ,@dired-atool-unpacking-options
                          ,@files)))
@@ -166,16 +171,17 @@ ARG is used for `dired-get-marked-files'."
   (interactive "P")
   (let* ((files (dired-get-marked-files t arg))
          (archive (expand-file-name ; to expand "~" to a real path name
-                   (dired-mark-pop-up
-                    nil nil files
-                    #'read-file-name
-                    (format "Pack %s to: "
-                            (dired-atool--file-names-for-prompt files))
-                    (dired-dwim-target-directory))))
+                    (dired-mark-pop-up
+                     nil nil files
+                     #'read-file-name
+                     (format "Pack %s to: "
+                             (dired-atool--file-names-for-prompt files))
+                     (dired-dwim-target-directory))))
          (dir (directory-file-name (file-name-directory archive)))
+         (archive-local-name (dired-atool--local-file-name archive))
          (command-list `(,dired-atool-atool
                          "--add"
-                         ,archive
+                         ,archive-local-name
                          ,@dired-atool-packing-options
                          ,@files))
          (ok? nil))
