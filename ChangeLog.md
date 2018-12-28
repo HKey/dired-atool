@@ -2,8 +2,13 @@
 
 ## development
 
-[Commits](https://github.com/HKey/dired-atool/compare/1.1.0...master)
+[Commits](https://github.com/HKey/dired-atool/compare/1.2.0...master)
 
+## 1.2.0 (2018/12/28)
+
+[Commits](https://github.com/HKey/dired-atool/compare/1.1.0...1.2.0)
+
+- Added support for TRAMP. ([#5](https://github.com/HKey/dired-atool/pull/5))
 - Fix file name completion of `dired-atool-do-pack`. ([#3](https://github.com/HKey/dired-atool/pull/3))
 
 ## 1.1.0 (2016/02/07)
