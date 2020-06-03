@@ -16,7 +16,7 @@ You can install dired-atool from [MELPA](https://melpa.org/#/) or
 [MELPA Stable](https://stable.melpa.org/#/) by following steps:
 
 1. Setup the Emacs built-in package manager to use MELPA or MELPA Stable.  
-   MELPA's documentation is [here](https://github.com/milkypostman/melpa#usage).
+   MELPA's documentation is [here](https://github.com/melpa/melpa#usage).
 
 2. Install dired-atool.  
    `M-x package-install dired-atool`
