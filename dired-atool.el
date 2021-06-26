@@ -4,7 +4,7 @@
 
 ;; Author: Hiroki YAMAKAWA <s06139@gmail.com>
 ;; URL: https://github.com/HKey/dired-atool
-;; Version: 1.2.0
+;; Version: 1.2.1
 ;; Package-Requires: ((emacs "24"))
 ;; Keywords: files
 
@@ -63,6 +63,11 @@
   :group 'dired-atool
   :package-version '(dired-atool . "1.1.0"))
 
+(defcustom dired-atool-default-to-current-dir nil
+  "Non-nil means that dired-atool extracts to current dir (no prompt)."
+  :type 'boolean
+  :group 'dired-atool
+  :package-version '(dired-atool . "1.2.1"))
 
 (defun dired-atool--buffer-name (message)
   "Make a buffer name using MESSAGE."
@@ -121,13 +126,16 @@ COMMAND-LIST is a list of a command separated by spaces."
 ARG is used for `dired-get-marked-files'."
   (interactive "P")
   (let* ((files (dired-get-marked-files t arg))
-         (dir (expand-file-name    ; to expand "~" to a real path name
-               (dired-mark-pop-up
-                nil nil files
-                #'read-directory-name
-                (format "Unpack %s to: "
-                        (dired-atool--file-names-for-prompt files))
-                (dired-dwim-target-directory))))
+         (dir (if dired-atool-default-to-current-dir
+                  default-directory
+                (expand-file-name    ; to expand "~" to a real path name
+                 (dired-mark-pop-up
+                  nil nil files
+                  #'read-directory-name
+                  (format "Unpack %s to: "
+                          (dired-atool--file-names-for-prompt files))
+                  (dired-dwim-target-directory)))
+                default-directory))
          (dir-local-name (dired-atool--local-file-name dir))
          (command-list `(,dired-atool-atool
                          ,(concat "--extract-to=" dir-local-name)
