@@ -4,7 +4,7 @@
 
 ;; Author: Hiroki YAMAKAWA <s06139@gmail.com>
 ;; URL: https://github.com/HKey/dired-atool
-;; Version: 1.2.0
+;; Version: 1.3.0
 ;; Package-Requires: ((emacs "24"))
 ;; Keywords: files
 
@@ -63,6 +63,11 @@
   :group 'dired-atool
   :package-version '(dired-atool . "1.1.0"))
 
+(defcustom dired-atool-unpack-no-confirm nil
+  "Non-nil means that dired-atool does not confirm with user before unpacking."
+  :type 'boolean
+  :group 'dired-atool
+  :package-version '(dired-atool . "1.3.0"))
 
 (defun dired-atool--buffer-name (message)
   "Make a buffer name using MESSAGE."
@@ -144,6 +149,26 @@ ARG is used for `dired-get-marked-files'."
       (message "Unpacking canceled."))))
 
 ;;;###autoload
+(defun dired-atool-do-unpack-to-current-dir (&optional arg)
+  "Unpack file(s) with atool to current directory.
+ARG is used for `dired-get-marked-files'."
+  (interactive "P")
+  (let* ((files (dired-get-marked-files t arg))
+         (dir-local-name (dired-atool--local-file-name (dired-current-directory)))
+         (command-list `(,dired-atool-atool
+                         ,(concat "--extract-to=" dir-local-name)
+                         "--each"
+                         ,@dired-atool-unpacking-options
+                         ,@files)))
+    (if (or dired-atool-unpack-no-confirm
+            (dired-mark-pop-up nil nil files
+                               #'yes-or-no-p
+                               (format "Unpack %s?"
+                                       (dired-atool--file-names-for-prompt files))))
+        (dired-atool--async-shell-command command-list)
+      (message "Unpacking canceled."))))
+
+;;;###autoload
 (defun dired-atool-do-unpack-with-subdirectory (&optional arg)
   "Unpack file(s) with atool.
 This command makes subdirectories in the current directory and unpacks
@@ -157,10 +182,11 @@ ARG is used for `dired-get-marked-files'."
                          "--each"
                          ,@dired-atool-unpacking-options
                          ,@files)))
-    (if (dired-mark-pop-up nil nil files
-                           #'yes-or-no-p
-                           (format "Unpack %s?"
-                                   (dired-atool--file-names-for-prompt files)))
+    (if (or dired-atool-unpack-no-confirm
+            (dired-mark-pop-up nil nil files
+                               #'yes-or-no-p
+                               (format "Unpack %s?"
+                                       (dired-atool--file-names-for-prompt files))))
         (dired-atool--async-shell-command command-list)
       (message "Unpacking canceled."))))
 
