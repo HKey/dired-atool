@@ -55,6 +55,11 @@ The versioning of dired-atool follows [Semantic Versioning 2.0.0](http://semver.
 
 This unpacks file(s) selected/marked on dired.
 
+### `dired-atool-do-unpack-to-current-dir`
+
+This is an unpacking command like `dired-atool-do-unpack`.
+But this always unpacks file(s) into the current directory.
+
 ### `dired-atool-do-unpack-with-subdirectory`
 
 This is an unpacking command like `dired-atool-do-unpack`.
