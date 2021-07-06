@@ -151,6 +151,8 @@ ARG is used for `dired-get-marked-files'."
 ;;;###autoload
 (defun dired-atool-do-unpack-to-current-dir (&optional arg)
   "Unpack file(s) with atool to current directory.
+When `dired-atool-unpack-no-confirm' is non-nil, this doesn't confirm
+about unpacking.
 ARG is used for `dired-get-marked-files'."
   (interactive "P")
   (let* ((files (dired-get-marked-files t arg))
@@ -173,6 +175,8 @@ ARG is used for `dired-get-marked-files'."
   "Unpack file(s) with atool.
 This command makes subdirectories in the current directory and unpacks
 files into them.
+When `dired-atool-unpack-no-confirm' is non-nil, this doesn't confirm
+about unpacking.
 ARG is used for `dired-get-marked-files'."
   (interactive "P")
   (let* ((files (dired-get-marked-files t arg))
