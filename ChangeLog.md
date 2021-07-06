@@ -2,7 +2,11 @@
 
 ## development
 
-[Commits](https://github.com/HKey/dired-atool/compare/1.2.0...master)
+[Commits](https://github.com/HKey/dired-atool/compare/1.3.0...master)
+
+## 1.3.0 (2021/07/07)
+
+[Commits](https://github.com/HKey/dired-atool/compare/1.2.0...1.3.0)
 
 - Add dired-atool-do-unpack-to-current-dir and dired-atool-unpack-no-confirm. ([#6](https://github.com/HKey/dired-atool/pull/6))  
   `dired-atool-unpack-no-confirm` can disable confirmation of `dired-atool-do-unpack-to-current-dir` and `dired-atool-do-unpack-with-subdirectory`.
