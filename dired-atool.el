@@ -116,7 +116,8 @@ COMMAND-LIST is a list of a command separated by spaces."
     (format "* [%d files]" (length files))))
 
 (defun dired-atool--local-file-name (file)
-  "Return local file name if file is on a remote system. Return FILE for local files."
+  "Return local file name if FILE is on a remote system.
+Otherwise return FILE as is."
   (let ((local-file (file-remote-p file 'localname)))
     (or local-file file)))
 
